@@ -306,9 +306,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-username/afrigric/issues)
-- **Documentation**: [Wiki](https://github.com/your-username/afrigric/wiki)
-- **Email**: support@afrigric.com
+- **Email**: abdulbasitsuleiman660@gmail.com
 
 ## 🔄 Future Enhancements
 
