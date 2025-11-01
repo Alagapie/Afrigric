@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="card shadow-lg border-0 mb-4" style="background: linear-gradient(120deg, #e8f5e9 0%, #f8f9fa 100%);">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-seedling me-2"></i>{{ translations.get('maize_guide_title', 'Maize Farming Assistant') }}
+                    </h2>
+                    <small class="text-white-50">{{ translations.get('maize_guide_subtitle', 'Expert guidance from planting to harvest') }}</small>
+                </div>
+            </div>
+
+            <!-- API Setup Alert -->
+            <div id="apiSetupAlert" class="alert alert-info alert-dismissible fade show" style="display: none;">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <h6><i class="fas fa-cog me-2"></i>{{ translations.get('setup_required', 'Setup Required: Gemini AI Integration') }}</h6>
+                <p>{{ translations.get('setup_desc', 'To get AI-powered farming guidance, you need to set up a Gemini API key:') }}</p>
+                <ol>
+                    <li>{{ translations.get('setup_step1', 'Go to Google AI Studio') }} <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></li>
+                    <li>{{ translations.get('setup_step2', 'Create a new API key') }}</li>
+                    <li>{{ translations.get('setup_step3', 'Open your project\'s .env file') }}</li>
+                    <li>{{ translations.get('setup_step4', 'Replace your_gemini_api_key_here with your actual API key') }}</li>
+                    <li>{{ translations.get('setup_step5', 'Restart the application') }}</li>
+                </ol>
+                <p><strong>Note:</strong> {{ translations.get('setup_note', 'Without the API key, you\'ll still get basic farming guidance from our offline knowledge base.') }}</p>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0 d-flex align-items-center">
+                                <i class="fas fa-book-open me-2"></i>{{ translations.get('complete_guide', 'Complete Farming Guide') }}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ translations.get('complete_guide_desc', 'Get comprehensive guidance from land preparation to harvest.') }}</p>
+                            <button id="getCompleteGuide" class="btn btn-primary w-100 shadow-sm">
+                                <i class="fas fa-play me-2"></i>{{ translations.get('complete_guide', 'Get Complete Guide') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-0 h-100">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0 d-flex align-items-center">
+                                <i class="fas fa-comments me-2"></i>{{ translations.get('ask_assistant', 'Ask Questions') }}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ translations.get('ask_assistant_desc', 'Have a specific question? Ask our AI farming assistant.') }}</p>
+                            <button id="askQuestionBtn" class="btn btn-info w-100 shadow-sm" data-bs-toggle="modal" data-bs-target="#questionModal">
+                                <i class="fas fa-question-circle me-2"></i>{{ translations.get('ask_assistant', 'Ask a Question') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage-by-Stage Guidance -->
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-list-check me-2"></i>{{ translations.get('stage_by_stage', 'Stage-by-Stage Guidance') }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="land_preparation">
+                                <i class="fas fa-tractor me-2"></i>{{ translations.get('land_preparation', 'Land Preparation') }}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="planting">
+                                <i class="fas fa-seedling me-2"></i>{{ translations.get('planting', 'Planting') }}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="fertilizer">
+                                <i class="fas fa-flask me-2"></i>{{ translations.get('fertilizer', 'Fertilizer') }}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="weed_control">
+                                <i class="fas fa-leaf me-2"></i>{{ translations.get('weed_control', 'Weed Control') }}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="pest_control">
+                                <i class="fas fa-bug me-2"></i>{{ translations.get('pest_control', 'Pest Control') }}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="disease_control">
+                                <i class="fas fa-virus me-2"></i>{{ translations.get('disease_control', 'Disease Control') }}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="irrigation">
+                                <i class="fas fa-tint me-2"></i>{{ translations.get('irrigation', 'Irrigation') }}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="harvesting">
+                                <i class="fas fa-cut me-2"></i>{{ translations.get('harvesting', 'Harvesting') }}
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success w-100 stage-btn shadow-sm" data-stage="post_harvest">
+                                <i class="fas fa-warehouse me-2"></i>{{ translations.get('post_harvest', 'Post-Harvest') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Display Area -->
+            <div id="contentArea" class="card shadow-lg border-0" style="display: none; background: #f8f9fa;">
+                <div class="card-header">
+                    <h5 id="contentTitle" class="mb-0">{{ translations.get('guidance_content', 'Guidance Content') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div id="loadingSpinner" class="text-center py-4" style="display: none;">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">{{ translations.get('loading', 'Loading...') }}</span>
+                        </div>
+                        <p class="mt-2">{{ translations.get('generating', 'Generating guidance...') }}</p>
+                    </div>
+                    <div id="contentDisplay"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Question Modal -->
+<div class="modal fade" id="questionModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content shadow-lg border-0">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title d-flex align-items-center">
+                    <i class="fas fa-question-circle me-2"></i>{{ translations.get('ask_farming_question', 'Ask the Farming Assistant') }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="questionForm">
+                    <div class="mb-3">
+                        <label for="userQuestion" class="form-label">{{ translations.get('ask_farming_question', 'What would you like to know about maize farming?') }}</label>
+                        <textarea class="form-control" id="userQuestion" rows="4"
+                                  placeholder="{{ translations.get('question_placeholder', 'Example: How do I control weeds in my maize field? Or When is the best time to apply fertilizer?') }}"
+                                  required></textarea>
+                        <small class="form-text text-muted">
+                            {{ translations.get('specific_question', 'Be specific about your question for the best answer.') }}
+                        </small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary shadow-sm" data-bs-dismiss="modal">{{ translations.get('cancel', 'Cancel') }}</button>
+                <button type="button" class="btn btn-success shadow-sm" id="submitQuestion">
+                    <i class="fas fa-paper-plane me-2"></i>{{ translations.get('ask_assistant', 'Ask Assistant') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get translations from Jinja2 template
+    const translations = {
+        completeGuide: '{{ translations.get("maize_guide_title", "Maize Farming Assistant") }}',
+        generatingGuide: '{{ translations.get("generating_guide", "Generating complete farming guide...") }}',
+        farmingAssistantAnswer: '{{ translations.get("ask_farming_question", "Ask the Farming Assistant") }}',
+        gettingAnswer: '{{ translations.get("generating_assistant", "Getting answer from AI assistant...") }}',
+        landPreparation: '{{ translations.get("land_preparation", "Land Preparation") }}',
+        plantingGuide: '{{ translations.get("planting", "Planting") }}',
+        fertilizerApplication: '{{ translations.get("fertilizer", "Fertilizer") }}',
+        weedManagement: '{{ translations.get("weed_control", "Weed Control") }}',
+        pestControl: '{{ translations.get("pest_control", "Pest Control") }}',
+        diseaseManagement: '{{ translations.get("disease_control", "Disease Control") }}',
+        irrigationGuide: '{{ translations.get("irrigation", "Irrigation") }}',
+        harvestingGuide: '{{ translations.get("harvesting", "Harvesting") }}',
+        postHarvestHandling: '{{ translations.get("post_harvest", "Post-Harvest") }}',
+        generating: '{{ translations.get("generating", "Generating...") }}',
+        pleaseEnterQuestion: '{{ translations.get("specific_question", "Be specific about your question for the best answer.") }}',
+        error: '{{ translations.get("error_details", "Error") }}',
+        networkError: '{{ translations.get("network_error", "Network Error") }}',
+        connectionError: '{{ translations.get("connection_error", "Unable to connect to the AI assistant. Please try again later.") }}',
+        fallbackContent: '{{ translations.get("fallback_content", "Fallback content:") }}',
+        usingOfflineGuidance: '{{ translations.get("using_offline", "Using offline guidance (AI not available)") }}',
+        aiGeneratedGuidance: '{{ translations.get("ai_generated", "AI-generated guidance") }}',
+        generatingStageGuidance: '{{ translations.get("generating_stage_guidance", "Generating %s guidance...") }}'
+    };
+    const contentArea = document.getElementById('contentArea');
+    const contentTitle = document.getElementById('contentTitle');
+    const contentDisplay = document.getElementById('contentDisplay');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const apiSetupAlert = document.getElementById('apiSetupAlert');
+
+    // Check if API is configured by making a test request
+    checkApiStatus();
+
+    async function checkApiStatus() {
+        try {
+            const response = await fetch('/api/maize-guidance', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ stage: 'land_preparation' })
+            });
+            const data = await response.json();
+
+            // Show setup alert if API is not configured
+            if (data.success && data.type === 'fallback' && data.content &&
+                data.content.includes('Gemini API not configured')) {
+                apiSetupAlert.style.display = 'block';
+            }
+        } catch (error) {
+            // If request fails, assume API is not configured
+            apiSetupAlert.style.display = 'block';
+        }
+    }
+
+    // Complete guide button
+    document.getElementById('getCompleteGuide').addEventListener('click', function() {
+        showContent(translations.completeGuide, translations.generatingGuide);
+        generateGuidance(null, null);
+    });
+
+    // Stage buttons
+    document.querySelectorAll('.stage-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const stage = this.getAttribute('data-stage');
+            const stageNames = {
+                'land_preparation': translations.landPreparation,
+                'planting': translations.plantingGuide,
+                'fertilizer': translations.fertilizerApplication,
+                'weed_control': translations.weedManagement,
+                'pest_control': translations.pestControl,
+                'disease_control': translations.diseaseManagement,
+                'irrigation': translations.irrigationGuide,
+                'harvesting': translations.harvestingGuide,
+                'post_harvest': translations.postHarvestHandling
+            };
+
+            showContent(stageNames[stage] || stage, translations.generatingStageGuidance.replace('%s', stageNames[stage]));
+            generateGuidance(stage, null);
+        });
+    });
+
+    // Question submission
+    document.getElementById('submitQuestion').addEventListener('click', function() {
+        const question = document.getElementById('userQuestion').value.trim();
+        if (!question) {
+            alert(translations.pleaseEnterQuestion);
+            return;
+        }
+
+        showContent(translations.farmingAssistantAnswer, translations.gettingAnswer);
+        generateGuidance(null, question);
+
+        // Close modal and reset form
+        bootstrap.Modal.getInstance(document.getElementById('questionModal')).hide();
+        document.getElementById('userQuestion').value = '';
+    });
+
+    function showContent(title, loadingMessage) {
+        contentArea.style.display = 'block';
+        contentTitle.textContent = title;
+        contentDisplay.innerHTML = '';
+        loadingSpinner.style.display = 'block';
+        contentDisplay.innerHTML = `<p class="text-muted">${loadingMessage}</p>`;
+
+        // Scroll to content area
+        contentArea.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function generateGuidance(stage, question) {
+        try {
+            const response = await fetch('/api/maize-guidance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    stage: stage,
+                    question: question
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                loadingSpinner.style.display = 'none';
+                contentDisplay.innerHTML = formatContent(data.content, data.type);
+            } else {
+                loadingSpinner.style.display = 'none';
+                contentDisplay.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>${translations.error}</h6>
+                        <p>${data.error}</p>
+                        ${data.fallback_content ? '<p><strong>' + translations.fallbackContent + '</strong></p>' + formatContent(data.fallback_content, 'fallback') : ''}
+                    </div>
+                `;
+            }
+        } catch (error) {
+            loadingSpinner.style.display = 'none';
+            contentDisplay.innerHTML = `
+                <div class="alert alert-danger">
+                    <h6><i class="fas fa-exclamation-triangle me-2"></i>${translations.networkError}</h6>
+                    <p>${translations.connectionError}</p>
+                    <p class="mb-0"><small>Error: ${error.message}</small></p>
+                </div>
+            `;
+        }
+    }
+
+    function formatContent(content, type) {
+        // Convert markdown-style formatting to HTML
+        let formatted = content
+            .replace(/^### (.*$)/gim, '<h5>$1</h5>')
+            .replace(/^## (.*$)/gim, '<h4>$1</h4>')
+            .replace(/^# (.*$)/gim, '<h3>$1</h3>')
+            .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+            .replace(/\*(.*)\*/gim, '<em>$1</em>')
+            .replace(/^- (.*$)/gim, '<li>$1</li>')
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/\n/g, '<br>');
+
+        // Wrap in paragraph tags
+        if (!formatted.includes('<p>') && !formatted.includes('<h')) {
+            formatted = '<p>' + formatted + '</p>';
+        }
+
+        // Add list formatting
+        formatted = formatted.replace(/(<li>.*<\/li>)+/g, '<ul>$&</ul>');
+
+        // Add appropriate styling based on type
+        if (type === 'error' || type === 'fallback') {
+            formatted = `<div class="alert alert-warning"><i class="fas fa-info-circle me-2"></i>${translations.usingOfflineGuidance}</div>` + formatted;
+        } else if (type !== 'fallback') {
+            formatted = `<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i>${translations.aiGeneratedGuidance}</div>` + formatted;
+        }
+
+        return formatted;
+    }
+});
+</script>
+{% endblock %}

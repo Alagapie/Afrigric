@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-chart-line me-2"></i>
+                        {{ translations.get('yield_results_title', 'Yield Prediction Results') }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success shadow-sm">
+                        <h4 class="alert-heading">{{ translations.get('predicted_yield_heading', 'Predicted Yield') }}</h4>
+                        <p class="display-4 text-center mb-0">{{ prediction }} hg/ha</p>
+                        {% if weather_data %}
+                        <div class="mt-3">
+                            <small class="text-muted">{{ translations.get('weather_description', 'Weather Description') }}: {{ weather_data.description }}</small>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card mb-3 border-0 shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">{{ translations.get('input_summary', 'Input Summary') }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Country/Location
+                                            <span class="badge bg-primary rounded-pill">{{ session.get('original_country', Area) }}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ translations.get('item', 'Crop') }}
+                                            <span class="badge bg-primary rounded-pill">{{ Item }}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ translations.get('year', 'Year') }}
+                                            <span class="badge bg-primary rounded-pill">{{ Year }}</span>
+                                        </li>
+                                        {% if planting_date %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Planting Date
+                                            <span class="badge bg-success rounded-pill">{{ planting_date }}</span>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3 border-0 shadow-sm">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">{{ translations.get('environmental_factors', 'Environmental Factors') }}</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ translations.get('rainfall', 'Rainfall') }}
+                                            <span class="badge bg-info rounded-pill">{{ rainfall }} mm/year</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ translations.get('temperature', 'Temperature') }}
+                                            <span class="badge bg-info rounded-pill">{{ temperature }} °C</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Pesticide Usage
+                                            <span class="badge bg-info rounded-pill">
+                                                {% if pesticides == '0' %}None{% endif %}
+                                                {% if pesticides == '0.1' %}Light{% endif %}
+                                                {% if pesticides == '0.2' %}Moderate{% endif %}
+                                                {% if pesticides == '0.3' %}Heavy{% endif %}
+                                                {% if pesticides == '0.5' %}Intensive{% endif %}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weather Data Section (if used) -->
+                    {% if weather_data %}
+                    <div class="card mb-3 border-info border-2 shadow-sm">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0 d-flex align-items-center">
+                                <i class="fas fa-cloud-sun me-2"></i>{{ translations.get('weather_data', 'Weather Data Used') }}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <strong>{{ translations.get('location', 'Location') }}:</strong> {{ weather_data.location }}, {{ weather_data.country }}
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>{{ translations.get('temperature', 'Temperature') }}:</strong> {{ weather_data.avg_temperature }}°C
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>{{ translations.get('rainfall', 'Rainfall') }}:</strong> {{ weather_data.avg_rainfall }} mm/day
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <small class="text-muted">{{ translations.get('weather_description', 'Weather Description') }}: {{ weather_data.description }}</small>
+                            </div>
+                            {% if weather_data.data_period %}
+                            <div class="mt-2">
+                                {% if weather_data.data_period == 'historical' %}
+                                <small class="text-info"><i class="fas fa-history me-1"></i>Data from growing period</small>
+                                {% elif weather_data.data_period == 'seasonal' %}
+                                <small class="text-warning"><i class="fas fa-calendar-alt me-1"></i>Seasonal averages used</small>
+                                {% elif weather_data.data_period == 'current' %}
+                                <small class="text-muted"><i class="fas fa-clock me-1"></i>Current weather approximation</small>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            {% if weather_data.note %}
+                            <div class="mt-1">
+                                <small class="text-muted"><i class="fas fa-info-circle me-1"></i>{{ weather_data.note }}</small>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                        <a href="{{ url_for('yield_prediction') }}" class="btn btn-outline-success me-md-2 shadow-sm">{{ translations.get('new_prediction', 'New Prediction') }}</a>
+                        <a href="{{ url_for('home') }}" class="btn btn-success shadow-sm">{{ translations.get('back_to_home', 'Back to Home') }}</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">{{ translations.get('yield_improvement_tips', 'Yield Improvement Tips') }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="yieldTipsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                    {{ translations.get('soil_management', 'Soil Management') }}
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>{{ translations.get('conduct_soil_tests', 'Conduct regular soil tests to monitor nutrient levels') }}</li>
+                                        <li>{{ translations.get('apply_organic_matter', 'Apply organic matter to improve soil structure') }}</li>
+                                        <li>{{ translations.get('maintain_soil_ph', 'Maintain proper soil pH (6.0-6.5 for most crops)') }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                    {{ translations.get('water_management', 'Water Management') }}
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>{{ translations.get('implement_drip_irrigation', 'Implement drip irrigation for efficient water use') }}</li>
+                                        <li>{{ translations.get('monitor_soil_moisture', 'Monitor soil moisture to avoid over/under watering') }}</li>
+                                        <li>{{ translations.get('use_mulch', 'Use mulch to reduce evaporation') }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                    {{ translations.get('crop_management', 'Crop Management') }}
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>{{ translations.get('practice_crop_rotation', 'Practice crop rotation to break pest cycles') }}</li>
+                                        <li>{{ translations.get('use_quality_seeds', 'Use high-quality, disease-resistant seeds') }}</li>
+                                        <li>{{ translations.get('maintain_spacing', 'Maintain proper plant spacing for optimal growth') }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

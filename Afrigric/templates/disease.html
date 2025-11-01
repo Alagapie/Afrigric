@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-success text-white">
+                <h2 class="mb-0 d-flex align-items-center">
+                    <i class="fas fa-virus me-2"></i>
+                    {{ translations.get('disease_detection', 'Maize Disease Detection') }}
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                    <div class="mb-4 text-center">
+                        <label for="fileInput" class="form-label w-100">
+                            <div class="upload-area p-5 border-2 border-dashed rounded-4 shadow-sm" id="uploadArea" style="background: linear-gradient(120deg, #e8f5e9 0%, #f8f9fa 100%);">
+                                <i class="fas fa-cloud-upload-alt fa-3x text-success mb-3"></i>
+                                <h5 class="fw-bold">{{ translations.get('upload_maize_leaf', 'Upload Maize Leaf Image') }}</h5>
+                                <p class="text-muted small">{{ translations.get('supported_formats', 'Supported formats: JPG, PNG (max 16MB)') }}</p>
+                                <input type="file" class="form-control d-none" id="fileInput" name="file" accept="image/*" required>
+                                <button type="button" class="btn btn-outline-success mt-3 shadow-sm" id="selectButton">
+                                    <i class="fas fa-folder-open me-2"></i>{{ translations.get('select_image', 'Select Image') }}
+                                </button>
+                            </div>
+                        </label>
+                        <div id="fileInfo" class="mt-2 d-none">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img id="previewImage" src="#" alt="Preview" class="img-thumbnail me-3 shadow" style="max-height: 100px;">
+                                <div>
+                                    <p id="fileName" class="mb-1 fw-semibold"></p>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" id="removeButton">
+                                        <i class="fas fa-times me-1"></i>{{ translations.get('remove', 'Remove') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success btn-lg px-5 shadow" id="analyzeButton" disabled>
+                            <i class="fas fa-search me-2"></i>{{ translations.get('analyze_diseases', 'Analyze for Diseases') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-lg mt-4 border-0">
+            <div class="card-header bg-light">
+                <h4 class="mb-0 d-flex align-items-center">
+                    <i class="fas fa-info-circle me-2 text-success"></i>
+                    {{ translations.get('about_diseases', 'About Maize Diseases') }}
+                </h4>
+            </div>
+            <div class="card-body">
+                <p>{{ translations.get('common_diseases', 'Common maize diseases in Africa include:') }}</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span class="badge bg-danger me-2">Blight</span> {{ translations.get('blight_desc', 'Causes elongated gray-green lesions on leaves') }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge bg-warning text-dark me-2">Rust</span> {{ translations.get('rust_desc', 'Small, round to elongate golden brown pustules') }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge bg-info text-dark me-2">Gray Leaf Spot</span> {{ translations.get('gray_spot_desc', 'Rectangular lesions with yellow halos') }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('fileInput');
+    const uploadArea = document.getElementById('uploadArea');
+    const selectButton = document.getElementById('selectButton');
+    const fileInfo = document.getElementById('fileInfo');
+    const previewImage = document.getElementById('previewImage');
+    const fileName = document.getElementById('fileName');
+    const removeButton = document.getElementById('removeButton');
+    const analyzeButton = document.getElementById('analyzeButton');
+    
+    // Handle file selection
+    selectButton.addEventListener('click', function() {
+        fileInput.click();
+    });
+    
+    // Handle file input change
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Check file size (client-side validation)
+            if (file.size > 16 * 1024 * 1024) {
+                alert('{{ translations.get("file_size_exceeds", "File size exceeds 16MB limit") }}');
+                return;
+            }
+
+            // Check file type
+            const fileType = file.name.split('.').pop().toLowerCase();
+            if (!['jpg', 'jpeg', 'png'].includes(fileType)) {
+                alert('{{ translations.get("invalid_file_type", "Only JPG, JPEG, and PNG files are allowed") }}');
+                return;
+            }
+            
+            // Create preview
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                previewImage.src = event.target.result;
+                fileName.textContent = file.name;
+                
+                // Show file info and hide upload area
+                uploadArea.classList.add('d-none');
+                fileInfo.classList.remove('d-none');
+                
+                // Enable analyze button
+                analyzeButton.disabled = false;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Handle remove button
+    removeButton.addEventListener('click', function() {
+        // Reset file input
+        fileInput.value = '';
+        
+        // Hide file info and show upload area
+        fileInfo.classList.add('d-none');
+        uploadArea.classList.remove('d-none');
+        
+        // Disable analyze button
+        analyzeButton.disabled = true;
+    });
+    
+    // Handle form submission
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        const file = fileInput.files[0];
+        if (!file) {
+            e.preventDefault();
+            alert('{{ translations.get("select_file_first", "Please select an image file first") }}');
+            return;
+        }
+        
+        // Show loading state
+        analyzeButton.disabled = true;
+        analyzeButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Analyzing...';
+    });
+});
+</script>
+{% endblock %}

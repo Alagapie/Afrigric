@@ -1,0 +1,528 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 mb-5" style="background: linear-gradient(120deg, #e8f5e9 0%, #f8f9fa 100%);">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-chart-line me-2"></i>{{ translations.get('yield_form_title', 'Crop Yield Prediction') }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('yield_prediction') }}">
+                        <!-- Basic Information -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="Area" class="form-label fw-semibold">{{ translations.get('country_location', 'Country/Location') }}</label>
+                                <select class="form-control form-control-lg" id="Area" name="Area" required>
+                                    <option value="">{{ translations.get('select_your_country', 'Select your country') }}</option>
+                                    <option value="Albania">Albania</option>
+                                    <option value="Algeria">Algeria</option>
+                                    <option value="Argentina">Argentina</option>
+                                    <option value="Armenia">Armenia</option>
+                                    <option value="Australia">Australia</option>
+                                    <option value="Austria">Austria</option>
+                                    <option value="Azerbaijan">Azerbaijan</option>
+                                    <option value="Bahamas">Bahamas</option>
+                                    <option value="Bahrain">Bahrain</option>
+                                    <option value="Bangladesh">Bangladesh</option>
+                                    <option value="Belarus">Belarus</option>
+                                    <option value="Belgium">Belgium</option>
+                                    <option value="Botswana">Botswana</option>
+                                    <option value="Brazil">Brazil</option>
+                                    <option value="Bulgaria">Bulgaria</option>
+                                    <option value="Burkina Faso">Burkina Faso</option>
+                                    <option value="Burundi">Burundi</option>
+                                    <option value="Cameroon">Cameroon</option>
+                                    <option value="Canada">Canada</option>
+                                    <option value="Central African Republic">Central African Republic</option>
+                                    <option value="Chile">Chile</option>
+                                    <option value="Colombia">Colombia</option>
+                                    <option value="Croatia">Croatia</option>
+                                    <option value="Denmark">Denmark</option>
+                                    <option value="Dominican Republic">Dominican Republic</option>
+                                    <option value="Ecuador">Ecuador</option>
+                                    <option value="Egypt">Egypt</option>
+                                    <option value="El Salvador">El Salvador</option>
+                                    <option value="Eritrea">Eritrea</option>
+                                    <option value="Estonia">Estonia</option>
+                                    <option value="Finland">Finland</option>
+                                    <option value="France">France</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="Ghana">Ghana</option>
+                                    <option value="Greece">Greece</option>
+                                    <option value="Guatemala">Guatemala</option>
+                                    <option value="Guinea">Guinea</option>
+                                    <option value="Guyana">Guyana</option>
+                                    <option value="Haiti">Haiti</option>
+                                    <option value="Honduras">Honduras</option>
+                                    <option value="Hungary">Hungary</option>
+                                    <option value="Ethiopia">Ethiopia</option>
+                                    <option value="Tanzania">Tanzania</option>
+                                    <option value="Uganda">Uganda</option>
+                                    <option value="India">India</option>
+                                    <option value="Indonesia">Indonesia</option>
+                                    <option value="Iraq">Iraq</option>
+                                    <option value="Ireland">Ireland</option>
+                                    <option value="Italy">Italy</option>
+                                    <option value="Jamaica">Jamaica</option>
+                                    <option value="Japan">Japan</option>
+                                    <option value="Kazakhstan">Kazakhstan</option>
+                                    <option value="Kenya">Kenya</option>
+                                    <option value="Latvia">Latvia</option>
+                                    <option value="Lebanon">Lebanon</option>
+                                    <option value="Lesotho">Lesotho</option>
+                                    <option value="Libya">Libya</option>
+                                    <option value="Lithuania">Lithuania</option>
+                                    <option value="Madagascar">Madagascar</option>
+                                    <option value="Malawi">Malawi</option>
+                                    <option value="Malaysia">Malaysia</option>
+                                    <option value="Mali">Mali</option>
+                                    <option value="Mauritania">Mauritania</option>
+                                    <option value="Mauritius">Mauritius</option>
+                                    <option value="Mexico">Mexico</option>
+                                    <option value="Morocco">Morocco</option>
+                                    <option value="Mozambique">Mozambique</option>
+                                    <option value="Namibia">Namibia</option>
+                                    <option value="Nepal">Nepal</option>
+                                    <option value="Netherlands">Netherlands</option>
+                                    <option value="New Zealand">New Zealand</option>
+                                    <option value="Nicaragua">Nicaragua</option>
+                                    <option value="Niger">Niger</option>
+                                    <option value="Nigeria">Nigeria</option>
+                                    <option value="Norway">Norway</option>
+                                    <option value="Pakistan">Pakistan</option>
+                                    <option value="Papua New Guinea">Papua New Guinea</option>
+                                    <option value="Peru">Peru</option>
+                                    <option value="Poland">Poland</option>
+                                    <option value="Portugal">Portugal</option>
+                                    <option value="Qatar">Qatar</option>
+                                    <option value="Romania">Romania</option>
+                                    <option value="Rwanda">Rwanda</option>
+                                    <option value="Saudi Arabia">Saudi Arabia</option>
+                                    <option value="Senegal">Senegal</option>
+                                    <option value="Slovenia">Slovenia</option>
+                                    <option value="South Africa">South Africa</option>
+                                    <option value="Spain">Spain</option>
+                                    <option value="Sri Lanka">Sri Lanka</option>
+                                    <option value="Sudan">Sudan</option>
+                                    <option value="Suriname">Suriname</option>
+                                    <option value="Sweden">Sweden</option>
+                                    <option value="Switzerland">Switzerland</option>
+                                    <option value="Tajikistan">Tajikistan</option>
+                                    <option value="Thailand">Thailand</option>
+                                    <option value="Tunisia">Tunisia</option>
+                                    <option value="Turkey">Turkey</option>
+                                    <option value="Uganda">Uganda</option>
+                                    <option value="Ukraine">Ukraine</option>
+                                    <option value="United Kingdom">United Kingdom</option>
+                                    <option value="Uruguay">Uruguay</option>
+                                    <option value="Zambia">Zambia</option>
+                                    <option value="Zimbabwe">Zimbabwe</option>
+                                </select>
+                                <small class="form-text text-muted">{{ translations.get('select_country_description', 'Select the country where you\'re farming') }}</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Item" class="form-label fw-semibold">{{ translations.get('item', 'Crop Type') }}</label>
+                                <select class="form-control form-control-lg" id="Item" name="Item" required>
+                                    <option value="">{{ translations.get('select_crop_type', 'Select crop type') }}</option>
+                                    <option value="Maize">Maize</option>
+                                    <option value="Rice">Rice</option>
+                                    <option value="Wheat">Wheat</option>
+                                    <option value="Sorghum">Sorghum</option>
+                                    <option value="Millet">Millet</option>
+                                    <option value="Cassava">Cassava</option>
+                                    <option value="Yam">Yam</option>
+                                    <option value="Potatoes">Potatoes</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Production Year -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="Year" class="form-label fw-semibold">{{ translations.get('year', 'Year') }}</label>
+                                <input type="number" class="form-control form-control-lg" id="Year" name="Year" min="2020" max="2030" value="2025" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="planting_date" class="form-label fw-semibold">{{ translations.get('planting_date', 'Planting Date') }}</label>
+                                <input type="date" class="form-control form-control-lg" id="planting_date" name="planting_date" required>
+                                <small class="form-text text-muted">{{ translations.get('planting_date_description', 'Select when you planted your crop for accurate weather data over the growing period') }}</small>
+                            </div>
+                        </div>
+
+                        <!-- Weather Data Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="rainfall" class="form-label fw-semibold">{{ translations.get('rainfall', 'Rainfall (mm/year)') }}</label>
+                                <input type="number" step="0.01" class="form-control form-control-lg" id="rainfall" name="rainfall" placeholder="{{ translations.get('auto_filled_from_weather', 'Auto-filled from weather') }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="temperature" class="form-label fw-semibold">{{ translations.get('temperature', 'Temperature (°C)') }}</label>
+                                <input type="number" step="0.01" class="form-control form-control-lg" id="temperature" name="temperature" placeholder="{{ translations.get('auto_filled_from_weather', 'Auto-filled from weather') }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Agricultural Inputs -->
+                        <div class="mb-4">
+                            <label for="pesticides" class="form-label fw-semibold">{{ translations.get('pesticide_usage', 'Pesticide Usage') }}</label>
+                            <select class="form-control form-control-lg" id="pesticides" name="pesticides" required>
+                                <option value="">{{ translations.get('select_pesticide_level', 'Select pesticide usage level') }}</option>
+                                <option value="0">{{ translations.get('none_pesticide', 'None - No pesticides used') }}</option>
+                                <option value="0.1">{{ translations.get('light_pesticide', 'Light - Sprayed 1-2 times per month') }}</option>
+                                <option value="0.2">{{ translations.get('moderate_pesticide', 'Moderate - Sprayed weekly (recommended)') }}</option>
+                                <option value="0.3">{{ translations.get('heavy_pesticide', 'Heavy - Sprayed 2-3 times per week') }}</option>
+                                <option value="0.5">{{ translations.get('intensive_pesticide', 'Intensive - Daily spraying') }}</option>
+                            </select>
+                            <small class="form-text text-muted">
+                                <i class="fas fa-info-circle me-1"></i>
+                                {{ translations.get('pesticide_description', 'Choose how often you\'ve used pesticides or insecticides on your crops') }}
+                            </small>
+                        </div>
+
+                        <!-- Weather Integration Section -->
+                        <div class="card mb-4 border-primary shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-cloud-sun me-2"></i>{{ translations.get('weather_data', 'Weather Data Integration') }}
+                                    </h5>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="useWeatherToggle" name="use_weather">
+                                        <label class="form-check-label text-white fw-semibold" for="useWeatherToggle">
+                                            {{ translations.get('use_real_weather_data', 'Use Real Weather Data') }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" id="weatherSection" style="display: none;">
+                                <div class="alert alert-light border">
+                                    <i class="fas fa-info-circle text-primary me-2"></i>
+                                    <strong>{{ translations.get('smart_weather_integration', 'Smart Weather Integration') }}:</strong> {{ translations.get('weather_integration_desc', 'Get accurate weather data for better yield predictions. Enter your location to auto-fill rainfall and temperature fields.') }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="location" class="form-label fw-semibold">{{ translations.get('location', 'Location') }}</label>
+                                    <select class="form-control form-control-lg" id="location" name="location">
+                                        <option value="">{{ translations.get('select_your_city', 'Select your city') }}</option>
+                                        <!-- Major Nigerian Cities -->
+                                        <option value="Lagos,Nigeria">Lagos</option>
+                                        <option value="Kano,Nigeria">Kano</option>
+                                        <option value="Ibadan,Nigeria">Ibadan</option>
+                                        <option value="Abuja,Nigeria">Abuja (Federal Capital)</option>
+                                        <option value="Port Harcourt,Nigeria">Port Harcourt</option>
+                                        <option value="Benin City,Nigeria">Benin City</option>
+                                        <option value="Kaduna,Nigeria">Kaduna</option>
+                                        <option value="Enugu,Nigeria">Enugu</option>
+                                        <option value="Ilorin,Nigeria">Ilorin</option>
+                                        <option value="Ogbomosho,Nigeria">Ogbomosho</option>
+                                        <option value="Abeokuta,Nigeria">Abeokuta</option>
+                                        <option value="Zaria,Nigeria">Zaria</option>
+                                        <option value="Jos,Nigeria">Jos</option>
+                                        <option value="Ile-Ife,Nigeria">Ile-Ife</option>
+                                        <option value="Akure,Nigeria">Akure</option>
+                                        <option value="Oyo,Nigeria">Oyo</option>
+                                        <option value="Sokoto,Nigeria">Sokoto</option>
+                                        <option value="Bauchi,Nigeria">Bauchi</option>
+                                        <option value="Minna,Nigeria">Minna</option>
+                                        <option value="Makurdi,Nigeria">Makurdi</option>
+                                        <!-- Or enter custom location -->
+                                        <option value="custom">Enter custom location...</option>
+                                    </select>
+                                    <input type="text" class="form-control form-control-lg mt-2" id="customLocation"
+                                        placeholder="{{ translations.get('enter_city_country', 'Enter city, country') }}" style="display: none;" autocomplete="off">
+                                    <div id="locationSuggestions" class="list-group mt-1" style="max-height: 200px; overflow-y: auto;"></div>
+                                    <small class="form-text text-muted">
+                                        <i class="fas fa-map-marker-alt me-1"></i>{{ translations.get('location_autocomplete_desc', 'Select your city or enter a custom location for accurate weather data') }}
+                                    </small>
+                                </div>
+                                <div id="weatherInfo" class="alert alert-success" style="display: none;">
+                                    <h6 class="mb-2"><i class="fas fa-check-circle me-2"></i>{{ translations.get('weather_data_retrieved', 'Weather Data Retrieved') }}</h6>
+                                    <div id="weatherDetails" class="text-muted"></div>
+                                    <div class="mt-2">
+                                        <small class="text-success"><i class="fas fa-magic me-1"></i>{{ translations.get('auto_filled_success', 'Form fields have been auto-filled with current weather data!') }}</small>
+                                    </div>
+                                </div>
+
+                                <!-- Manual Input Instructions -->
+                                <div id="manualInputInstructions" class="alert alert-info" style="display: none;">
+                                    <h6><i class="fas fa-info-circle me-2"></i>{{ translations.get('manual_input_instructions', 'Manual Input Instructions') }}</h6>
+                                    <p class="mb-1">{{ translations.get('manual_input_desc', 'If weather data is not available, please enter approximate values:') }}</p>
+                                    <ul class="mb-0 small">
+                                        <li><strong>{{ translations.get('rainfall', 'Rainfall') }}:</strong> {{ translations.get('rainfall_manual', 'Average monthly rainfall in mm (e.g., 50-200)') }}</li>
+                                        <li><strong>{{ translations.get('temperature', 'Temperature') }}:</strong> {{ translations.get('temperature_manual', 'Average monthly temperature in °C (e.g., 25-35)') }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">{{ translations.get('predict_yield', 'Predict Yield') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0 d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2"></i>{{ translations.get('about_yield_prediction', 'About Yield Prediction') }}
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>{{ translations.get('how_yield_prediction_works', 'How does yield prediction work?') }}</strong></p>
+                    <p>{{ translations.get('yield_prediction_intro', 'Our smart computer analyzes your farming conditions and gives you a prediction about your harvest. Here\'s what it considers:') }}</p>
+                    <ul>
+                        <li><strong>{{ translations.get('what_you_planted', 'What you planted') }}:</strong> {{ translations.get('what_you_planted_desc', 'Different crops (maize, rice, etc.) have different expected yields') }}</li>
+                        <li><strong>{{ translations.get('where_you_farm', 'Where you farm') }}:</strong> {{ translations.get('where_you_farm_desc', 'Each country has different growing conditions and farming practices') }}</li>
+                        <li><strong>{{ translations.get('when_you_planted', 'When you planted') }}:</strong> {{ translations.get('when_you_planted_desc', 'The computer looks at weather from planting until now') }}</li>
+                        <li><strong>{{ translations.get('weather_conditions', 'Weather conditions') }}:</strong> {{ translations.get('weather_conditions_desc', 'Rain, temperature, and sunlight affect how well crops grow') }}</li>
+                        <li><strong>{{ translations.get('pest_control', 'Pest control') }}:</strong> {{ translations.get('pest_control_desc', 'How well you protect your crops from pests and diseases') }}</li>
+                        <li><strong>{{ translations.get('year_factor', 'Year') }}:</strong> {{ translations.get('year_factor_desc', 'Different years have different global conditions') }}</li>
+                    </ul>
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-lightbulb me-2"></i>{{ translations.get('prediction_accuracy_title', 'How accurate is the prediction?') }}</h6>
+                        <p>{{ translations.get('prediction_accuracy_desc', 'The prediction is based on real farming data from many farmers. It gives you a good estimate, but actual results can vary based on:') }}</p>
+                        <ul class="mb-0">
+                            <li>{{ translations.get('seed_quality', 'Quality of your seeds and soil') }}</li>
+                            <li>{{ translations.get('unexpected_weather', 'Unexpected weather changes') }}</li>
+                            <li>{{ translations.get('pest_outbreaks', 'Pest or disease outbreaks') }}</li>
+                            <li>{{ translations.get('farming_experience', 'Your farming experience and care') }}</li>
+                        </ul>
+                    </div>
+                    <p><strong>{{ translations.get('understanding_results', 'Understanding the results') }}:</strong> {{ translations.get('understanding_results_desc', 'The prediction shows expected yield in hectograms per hectare (hg/ha). This is a standard farming measurement. The computer has learned from farming data all over the world and gives you the most likely yield based on your country\'s typical growing conditions combined with your specific inputs.') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Weather integration functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const useWeatherToggle = document.getElementById('useWeatherToggle');
+    const weatherSection = document.getElementById('weatherSection');
+    const locationSelect = document.getElementById('location');
+    const customLocationInput = document.getElementById('customLocation');
+    const locationSuggestions = document.getElementById('locationSuggestions');
+    const weatherInfo = document.getElementById('weatherInfo');
+    const weatherDetails = document.getElementById('weatherDetails');
+    const rainfallInput = document.getElementById('rainfall');
+    const temperatureInput = document.getElementById('temperature');
+    const plantingDateInput = document.getElementById('planting_date');
+
+    let weatherTimeout;
+
+    // Toggle weather section visibility
+    useWeatherToggle.addEventListener('change', function() {
+        if (this.checked) {
+            weatherSection.style.display = 'block';
+            locationSelect.required = true;
+        } else {
+            weatherSection.style.display = 'none';
+            locationSelect.required = false;
+            customLocationInput.style.display = 'none';
+            weatherInfo.style.display = 'none';
+            locationSelect.value = '';
+            customLocationInput.value = '';
+        }
+    });
+
+    // Handle location dropdown selection
+    locationSelect.addEventListener('change', function() {
+        const selectedValue = this.value;
+
+        if (selectedValue === 'custom') {
+            // Show custom location input
+            customLocationInput.style.display = 'block';
+            customLocationInput.required = true;
+            customLocationInput.focus();
+        } else if (selectedValue) {
+            // Hide custom location input and fetch weather
+            customLocationInput.style.display = 'none';
+            customLocationInput.required = false;
+            customLocationInput.value = '';
+
+            // Fetch weather data for selected location
+            fetchWeatherData(selectedValue);
+        } else {
+            // No location selected
+            customLocationInput.style.display = 'none';
+            customLocationInput.required = false;
+            weatherInfo.style.display = 'none';
+        }
+    });
+
+    // Handle custom location input
+    customLocationInput.addEventListener('input', function() {
+        clearTimeout(weatherTimeout);
+        const query = this.value.trim();
+
+        if (query.length >= 2) {
+            weatherTimeout = setTimeout(() => {
+                fetchLocationSuggestions(query);
+            }, 300);
+        } else {
+            locationSuggestions.innerHTML = '';
+        }
+    });
+
+    // Handle location suggestion clicks
+    locationSuggestions.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('location-suggestion')) {
+            const locationName = e.target.textContent;
+            customLocationInput.value = locationName;
+            locationSuggestions.innerHTML = '';
+
+            // Fetch weather data for selected location
+            fetchWeatherData(locationName);
+        }
+    });
+
+    async function fetchLocationSuggestions(query) {
+        try {
+            const response = await fetch(`/api/location_suggestions?q=${encodeURIComponent(query)}`);
+            const suggestions = await response.json();
+
+            locationSuggestions.innerHTML = '';
+            suggestions.forEach(suggestion => {
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'list-group-item list-group-item-action location-suggestion';
+                item.textContent = suggestion.full_name;
+                locationSuggestions.appendChild(item);
+            });
+        } catch (error) {
+            console.error('Error fetching location suggestions:', error);
+        }
+    }
+
+    async function fetchWeatherData(location) {
+        try {
+            console.log('Fetching weather for:', location); // Debug log
+
+            // Show loading state
+            weatherInfo.style.display = 'block';
+            weatherInfo.className = 'alert alert-warning';
+            weatherDetails.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>{{ translations.get("fetching_weather_data", "Fetching weather data...") }}';
+
+            // Build URL with planting date if available
+            let url = `/api/weather/${encodeURIComponent(location)}`;
+            if (plantingDateInput && plantingDateInput.value) {
+                url += `?planting_date=${plantingDateInput.value}`;
+            }
+
+            const response = await fetch(url);
+            console.log('API Response status:', response.status); // Debug log
+
+            const data = await response.json();
+            console.log('API Response data:', data); // Debug log
+
+            if (response.ok && data.success && data.data) {
+                displayWeatherData(data.data);
+            } else {
+                const errorMsg = data.error || '{{ translations.get("weather_error", "Unable to fetch weather data") }}';
+                console.error('Weather API error:', errorMsg); // Debug log
+
+                weatherInfo.className = 'alert alert-danger';
+                weatherDetails.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i>${errorMsg}`;
+
+                // Show manual input instructions
+                document.getElementById('manualInputInstructions').style.display = 'block';
+
+                // Hide error after 5 seconds
+                setTimeout(() => {
+                    weatherInfo.style.display = 'none';
+                }, 5000);
+            }
+        } catch (error) {
+            console.error('Error fetching weather data:', error);
+            weatherInfo.className = 'alert alert-danger';
+            weatherDetails.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>{{ translations.get("weather_error", "Unable to fetch weather data") }}';
+            setTimeout(() => {
+                weatherInfo.style.display = 'none';
+            }, 5000);
+        }
+    }
+
+    function displayWeatherData(weatherData) {
+        console.log('Weather data received:', weatherData); // Debug log
+
+        // Auto-fill form fields with weather data FIRST
+        if (rainfallInput && temperatureInput) {
+            // Ensure we have valid numeric values
+            const rainfall = parseFloat(weatherData.avg_rainfall) || 0;
+            const temperature = parseFloat(weatherData.avg_temperature) || 0;
+
+            rainfallInput.value = rainfall.toFixed(1);
+            temperatureInput.value = temperature.toFixed(1);
+
+            console.log('Auto-filled fields:', { rainfall: rainfallInput.value, temperature: temperatureInput.value }); // Debug log
+
+            // Add visual indicator that fields were auto-filled
+            rainfallInput.style.borderColor = '#28a745';
+            rainfallInput.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
+            temperatureInput.style.borderColor = '#28a745';
+            temperatureInput.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
+
+            // Remove the visual indicator after 3 seconds
+            setTimeout(() => {
+                rainfallInput.style.borderColor = '';
+                rainfallInput.style.boxShadow = '';
+                temperatureInput.style.borderColor = '';
+                temperatureInput.style.boxShadow = '';
+            }, 3000);
+        }
+
+        // Then display weather information
+        let periodInfo = '';
+        if (weatherData.data_period) {
+            if (weatherData.data_period === 'historical') {
+                periodInfo = '<div class="mt-2"><small class="text-info"><i class="fas fa-history me-1"></i>{{ translations.get("using_historical_data", "Using historical weather data for growing period") }}</small></div>';
+            } else if (weatherData.data_period === 'seasonal') {
+                periodInfo = '<div class="mt-2"><small class="text-warning"><i class="fas fa-calendar-alt me-1"></i>{{ translations.get("using_seasonal_data", "Using seasonal averages for longer periods") }}</small></div>';
+            } else if (weatherData.data_period === 'current') {
+                periodInfo = '<div class="mt-2"><small class="text-muted"><i class="fas fa-clock me-1"></i>{{ translations.get("using_current_weather", "Using current weather (historical data limited by free API)") }}</small></div>';
+            }
+        }
+
+        let noteInfo = '';
+        if (weatherData.note) {
+            noteInfo = `<div class="mt-2"><small class="text-muted"><i class="fas fa-info-circle me-1"></i>${weatherData.note}</small></div>`;
+        }
+
+        weatherDetails.innerHTML = `
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>{{ translations.get('location', 'Location') }}:</strong> ${weatherData.location || 'N/A'}, ${weatherData.country || ''}
+                </div>
+                <div class="col-md-4">
+                    <strong>{{ translations.get('temperature', 'Temperature') }}:</strong> ${parseFloat(weatherData.avg_temperature || 0).toFixed(1)}°C
+                </div>
+                <div class="col-md-4">
+                    <strong>{{ translations.get('rainfall', 'Rainfall') }}:</strong> ${parseFloat(weatherData.avg_rainfall || 0).toFixed(1)} mm/day
+                </div>
+            </div>
+            <div class="mt-2">
+                <strong>{{ translations.get('weather_description', 'Weather Description') }}:</strong> ${weatherData.description || 'N/A'}
+            </div>
+            ${periodInfo}
+            ${noteInfo}
+        `;
+
+        weatherInfo.className = 'alert alert-success';
+        console.log('Weather data displayed successfully'); // Debug log
+    }
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!locationInput.contains(e.target) && !locationSuggestions.contains(e.target)) {
+            locationSuggestions.innerHTML = '';
+        }
+    });
+});
+</script>
+{% endblock %}

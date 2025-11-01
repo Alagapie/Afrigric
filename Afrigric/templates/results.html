@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white">
+                <h2 class="mb-0">Detection Results</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 text-center mb-4 mb-md-0">
+                        <img src="{{ url_for('static', filename='uploads/' + image_path.split('/')[-1]) }}" 
+                             alt="Uploaded Image" class="img-fluid rounded shadow">
+                        <div class="mt-3">
+                            <a href="{{ url_for(problem_type.lower().replace(' ', '_') + '_detection') }}" 
+                               class="btn btn-outline-success">
+                                <i class="fas fa-redo me-2"></i>Analyze Another
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-{{ 'success' if problem_name == 'Healthy' else 'danger' }}">
+                            <h4 class="alert-heading">
+                                <i class="fas fa-{{ 'check-circle' if problem_name == 'Healthy' else 'exclamation-triangle' }} me-2"></i>
+                                {{ problem_type }}: {{ problem_name }}
+                            </h4>
+                            <p>Confidence: <strong>{{ confidence }}</strong></p>
+                            <hr>
+                            <p class="mb-0">{{ description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h3 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Recommended Solutions
+                </h3>
+            </div>
+            <div class="card-body">
+                <ol class="list-group list-group-numbered">
+                    {% for solution in solutions %}
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">{{ solution }}</div>
+                        </div>
+                        <span class="badge bg-success rounded-pill">Local</span>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h3 class="mb-0">
+                    <i class="fas fa-shield-alt me-2"></i>Prevention Tips
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for tip in prevention %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0 me-3 text-info">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                    <div>
+                                        {{ tip }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

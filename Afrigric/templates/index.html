@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(120deg, #e8f5e9 0%, #f8f9fa 100%); border-radius: 1.5rem; box-shadow: 0 4px 24px rgba(40,167,69,0.07);">
+    <div class="container">
+        <img src="{{ url_for('static', filename='images/default_maize.jpg') }}" alt="AfriGric Hero" style="height:64px;width:64px;border-radius:50%;box-shadow:0 2px 8px rgba(40,167,69,0.12);margin-bottom:1rem;">
+        <h1 class="display-4 fw-bold text-success mb-3">{{ translations.get('app_title', 'AfriGric - Maize Problem Solver') }}</h1>
+        <p class="lead mb-4">{{ translations.get('hero_description', 'Upload an image to identify diseases, pests, or nutrient deficiencies in your maize crop and get locally-sourced solutions.') }}</p>
+        <a href="{{ url_for('disease_detection') }}" class="btn btn-success btn-lg px-4 mb-4 shadow-sm">{{ translations.get('get_started', 'Get Started') }}</a>
+        <div class="row g-4 mt-2">
+            <div class="col-md-4">
+                <div class="card h-100 border-success shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-virus text-danger mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="card-title">{{ translations.get('disease_detection', 'Disease Detection') }}</h3>
+                        <p class="card-text">{{ translations.get('disease_desc', 'Identify common maize diseases like blight, rust, and leaf spot.') }}</p>
+                        <a href="{{ url_for('disease_detection') }}" class="btn btn-outline-success">{{ translations.get('detect_now', 'Detect Now') }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-success shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-bug text-warning mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="card-title">{{ translations.get('pest_detection', 'Pest Detection') }}</h3>
+                        <p class="card-text">{{ translations.get('pest_desc', 'Detect harmful pests attacking your maize plants.') }}</p>
+                        <a href="{{ url_for('pest_detection') }}" class="btn btn-outline-success">{{ translations.get('detect_now', 'Detect Now') }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-success shadow-sm">
+                    <div class="card-body text-center">
+                        <i class="fas fa-seedling text-primary mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="card-title">{{ translations.get('nutrient_analysis', 'Nutrient Analysis') }}</h3>
+                        <p class="card-text">{{ translations.get('nutrient_desc', 'Identify nutrient deficiencies affecting your maize growth.') }}</p>
+                        <a href="{{ url_for('nutrient_detection') }}" class="btn btn-outline-success">{{ translations.get('detect_now', 'Detect Now') }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">{{ translations.get('about_title', 'About AfriGric') }}</h3>
+            </div>
+            <div class="card-body">
+                <p>{{ translations.get('about_desc', 'AfriGric is an AI-powered system designed to help African maize farmers identify and solve common crop problems including diseases, pests, and nutrient deficiencies.') }}</p>
+                <p>{{ translations.get('features', 'Our system provides:') }}</p>
+                <ul>
+                    <li>{{ translations.get('accurate_detection', 'Accurate detection of maize plant issues') }}</li>
+                    <li>{{ translations.get('local_solutions', 'Locally-sourced, affordable solutions') }}</li>
+                    <li>{{ translations.get('prevention_strategies', 'Prevention strategies for future crops') }}</li>
+                    <li>{{ translations.get('user_friendly', 'User-friendly interface for farmers') }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="mb-0">{{ translations.get('how_it_works', 'How It Works') }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0 me-3">
+                        <span class="badge bg-success rounded-circle p-3">1</span>
+                    </div>
+                    <div>
+                        <h5>{{ translations.get('upload_image', 'Upload Image') }}</h5>
+                        <p>{{ translations.get('upload_desc', 'Take a clear photo of the affected plant part (leaf, stem, etc.)') }}</p>
+                    </div>
+                </div>
+                <div class="d-flex mb-3">
+                    <div class="flex-shrink-0 me-3">
+                        <span class="badge bg-success rounded-circle p-3">2</span>
+                    </div>
+                    <div>
+                        <h5>{{ translations.get('ai_analysis', 'AI Analysis') }}</h5>
+                        <p>{{ translations.get('analysis_desc', 'Our system analyzes the image to detect the problem') }}</p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-3">
+                        <span class="badge bg-success rounded-circle p-3">3</span>
+                    </div>
+                    <div>
+                        <h5>{{ translations.get('get_solutions', 'Get Solutions') }}</h5>
+                        <p>{{ translations.get('solutions_desc', 'Receive locally-appropriate recommendations to solve the problem') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header bg-success text-white">
+        <h3 class="mb-0">{{ translations.get('why_choose', 'Why Choose AfriGric?') }}</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-leaf text-success mb-3" style="font-size: 2rem;"></i>
+                        <h5>{{ translations.get('local_solutions_title', 'Local Solutions') }}</h5>
+                        <p>{{ translations.get('local_solutions_desc', 'Recommendations tailored to African farming conditions') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-mobile-alt text-primary mb-3" style="font-size: 2rem;"></i>
+                        <h5>{{ translations.get('mobile_friendly', 'Mobile Friendly') }}</h5>
+                        <p>{{ translations.get('mobile_desc', 'Works on smartphones commonly used by farmers') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-lightbulb text-warning mb-3" style="font-size: 2rem;"></i>
+                        <h5>{{ translations.get('expert_knowledge', 'Expert Knowledge') }}</h5>
+                        <p>{{ translations.get('expert_desc', 'Based on agricultural research and local expertise') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="card h-100 border-success">
+        <div class="card-body text-center">
+            <i class="fas fa-chart-line text-info mb-3" style="font-size: 3rem;"></i>
+            <h3 class="card-title">{{ translations.get('yield_prediction_title', 'Yield Prediction') }}</h3>
+            <p class="card-text">{{ translations.get('yield_desc', 'Estimate your crop yield based on environmental factors.') }}</p>
+            <a href="{{ url_for('yield_prediction') }}" class="btn btn-outline-success">{{ translations.get('predict_now', 'Predict Now') }}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
